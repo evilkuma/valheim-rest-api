@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using ValheimRestApi.Models;
 using ValheimRestApi.Server;
 
 namespace ValheimRestApi

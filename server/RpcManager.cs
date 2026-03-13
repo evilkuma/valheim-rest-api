@@ -1,12 +1,40 @@
 
-// using System;
-// using System.Collections.Generic;
-// using ValheimRestApi.Models;
+using System;
+using System.Collections.Generic;
 
-// namespace ValheimRestApi.Server
-// {
-//     public class RpcManager
-//     {
+namespace ValheimRestApi.Server
+{
+    public static class RpcManager
+    {
+        public static readonly EventManager events = new ();
+
+        public static void Initialize()
+        {
+
+        }
+
+        private static void RegisterRpc()
+        {
+            // ZRoutedRpc.instance.Register<ZPackage>("ValheimRestApi.Test", async (long senderId, ZPackage pkg) => {
+            //     events.Dispatch<object>("testrpc");
+            // });
+        }
+
+        public static ZNetPeer FindPlayerByName(string playerName)
+        {
+            var peers = ZNet.instance.GetPeers();
+            foreach (var peer in peers)
+            {
+                if (peer.m_playerName != null && 
+                    peer.m_playerName.Equals(playerName))
+                {
+                    return peer;
+                }
+            }
+            
+            return null;
+        }
+
 //         public event EventHandler<InventoryEventArgs> InventoryEvent;
 //         // public event EventHandler<InventoryEventArgs> InventoryDataEvent;
 //         // public event EventHandler<InventoryEventArgs> PlayerStatusEvent;
@@ -54,5 +82,5 @@
 //         // {
 //         //     PlayerStatusEvent?.Invoke(this, new InventoryEventArgs("data"));
 //         // }
-//     }
-// }
+    }
+}

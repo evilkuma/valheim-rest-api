@@ -4,13 +4,23 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
-using ValheimRestApi.Models;
 using BepInEx.Logging;
 
 namespace ValheimRestApi.Server
 {
+    public class HttpEventArgs : EventArgs
+    {
+        public HttpListenerRequest Request { get; }
+        public HttpListenerResponse Response { get; }
+
+        public HttpEventArgs(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            Request = request;
+            Response = response;
+        }
+    }
+
     public class HttpServer : IDisposable
     {
         private HttpListener listener;
@@ -89,8 +99,8 @@ namespace ValheimRestApi.Server
                 string eventName = request.Url.AbsolutePath.ToLower();
                 if (ServerValheimRestAPIPlugin.httpManager.HasEvent(eventName))
                 {
-                    object data = await ServerValheimRestAPIPlugin.httpManager.Dispatch<object>(request.Url.AbsolutePath.ToLower(), this, new ResponseEventArgs(response));
-                    await WriteJsonResponse(response, data);
+                    object result = await ServerValheimRestAPIPlugin.httpManager.Dispatch<object>(request.Url.AbsolutePath.ToLower(), this, new HttpEventArgs(request, response));
+                    await WriteJsonResponse(response, result);
                 }
                 else
                 {
@@ -112,7 +122,7 @@ namespace ValheimRestApi.Server
 
         private async Task WriteJsonResponse(HttpListenerResponse response, object data)
         {
-            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+            string json = JsonParser.Serialize(data);
             byte[] buffer = Encoding.UTF8.GetBytes(json);
             await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
         }
