@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ValheimRestApi.Server
+namespace Shared
 {
     public class EventManager
     {
@@ -35,7 +35,7 @@ namespace ValheimRestApi.Server
                 ReturnType = returnType
             };
 
-            ServerValheimRestAPIPlugin.instance.Log.LogInfo($"EventManager Register Event: {eventName}");
+            Log.LogInfo($"EventManager Register Event: {eventName}");
         }
 
         private Delegate GetHandler(string eventName)

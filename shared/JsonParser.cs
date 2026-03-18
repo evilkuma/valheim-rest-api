@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 
-namespace ValheimRestApi.Server
+namespace Shared
 {
     public static class JsonParser
     {
@@ -16,6 +16,14 @@ namespace ValheimRestApi.Server
             }
 
             var data = JsonConvert.DeserializeObject<TResult>(requestBody);
+
+            return data;
+        }
+
+        public static TResult ParsePkg<TResult>(ZPackage pkg)
+        {
+            string jsonData = pkg.ReadString();
+            var data = JsonConvert.DeserializeObject<TResult>(jsonData);
 
             return data;
         }

@@ -1,3 +1,5 @@
 /Build/
 /client/obj/
 /server/obj/
+/shared/obj/
+/shared/bin/

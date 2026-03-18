@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
-using BepInEx.Logging;
+using Shared;
 
 namespace ValheimRestApi.Server
 {
@@ -23,14 +21,15 @@ namespace ValheimRestApi.Server
 
     public class HttpServer : IDisposable
     {
+        private static readonly EventManager Events = new ();
+
         private HttpListener listener;
         private Thread serverThread;
         private bool isRunning;
-        private ManualLogSource Log;
 
         public HttpServer(int port)
         {
-            Log = ServerValheimRestAPIPlugin.instance.Log;
+            Events.Add("/api/test", ValheimRestApi.Server.Debug.Test);
 
             listener = new HttpListener();
             listener.Prefixes.Add($"http://*:{port}/");
@@ -97,9 +96,9 @@ namespace ValheimRestApi.Server
                 }
 
                 string eventName = request.Url.AbsolutePath.ToLower();
-                if (ServerValheimRestAPIPlugin.httpManager.HasEvent(eventName))
+                if (Events.HasEvent(eventName))
                 {
-                    object result = await ServerValheimRestAPIPlugin.httpManager.Dispatch<object>(request.Url.AbsolutePath.ToLower(), this, new HttpEventArgs(request, response));
+                    object result = await Events.Dispatch<object>(request.Url.AbsolutePath.ToLower(), this, new HttpEventArgs(request, response));
                     await WriteJsonResponse(response, result);
                 }
                 else
@@ -130,7 +129,6 @@ namespace ValheimRestApi.Server
         public void Dispose()
         {
             isRunning = false;
-            // listener?.Stop();
             serverThread?.Join(1000);
         }
     }

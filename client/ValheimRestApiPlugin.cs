@@ -1,28 +1,40 @@
 using BepInEx;
-using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using UnityEngine;
+using Newtonsoft.Json;
+using Shared;
 
-namespace ValheimRestApi.Client
+namespace ValheimRestApi
 {
-    [BepInPlugin("ru.evilkuma.valheimrestapi.client", "Valheim Rest API Client", "1.0.0")]
-    public class ClientValheimRestAPIPlugin : BaseUnityPlugin
+    public class DebugRpcData
     {
-        public static ClientValheimRestAPIPlugin instance;
+        [JsonProperty("message")]
+        public string message { get; set; }
+    }
+
+    [BepInPlugin("ru.evilkuma.valheimrestapi.client", "Valheim Rest API Client", "1.0.0")]
+    public class ValheimRestAPIPlugin : BaseUnityPlugin
+    {
+        public static ValheimRestAPIPlugin instance;
         
         private void Awake()
         {
             instance = this;
-            
-            Logger.LogInfo("=== Valheim Inventory API Client загружен ===");
+
+            Log.Initialize(base.Logger);
+            RpcManager.Initialize();
+
+            RpcManager.AddListener("ValheimRestApi/api/test", OnTestMessage);
+
+            Log.LogInfo("=== Valheim Inventory API Client загружен ===");
         }
 
-
-        private void OnDestroy()
+        private void OnTestMessage(ZPackage pkg)
         {
+            var data = JsonParser.ParsePkg<DebugRpcData>(pkg);
+            Log.LogInfo($"Получили тестовое сообщение от сервера: {data.message}");
+
+            ZPackage package = new ZPackage();
+            package.Write("{ status: \"ok\" }");
+            RpcManager.SendMessage("ValheimRestApi/api/test", RpcManager.GetServerId(), package);
         }
     }
 }

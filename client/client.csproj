@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\shared\shared.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
@@ -43,8 +47,12 @@
       <Private>False</Private>
     </Reference>
 		<Reference Include="UnityEngine.PhysicsModule">
-			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Valheim dedicated server\valheim_server_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+			<HintPath>$(VALHEIM_INSTALL)\valheim_server_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<!-- <Reference Include="Jotunn">
+			<HintPath>$(VALHEIM_INSTALL)\BepInEx\plugins\Jotunn.dll</HintPath>
+			<Private>False</Private>
+		</Reference> -->
   </ItemGroup>
 </Project>
