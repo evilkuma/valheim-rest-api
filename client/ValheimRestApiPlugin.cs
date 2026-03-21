@@ -1,15 +1,9 @@
 using BepInEx;
-using Newtonsoft.Json;
 using Shared;
+using Shared.Models.Debug;
 
 namespace ValheimRestApi
 {
-    public class DebugRpcData
-    {
-        [JsonProperty("message")]
-        public string message { get; set; }
-    }
-
     [BepInPlugin("ru.evilkuma.valheimrestapi.client", "Valheim Rest API Client", "1.0.0")]
     public class ValheimRestAPIPlugin : BaseUnityPlugin
     {
@@ -29,7 +23,7 @@ namespace ValheimRestApi
 
         private void OnTestMessage(ZPackage pkg)
         {
-            var data = JsonParser.ParsePkg<DebugRpcData>(pkg);
+            var data = JsonParser.ParsePkg<DebugRpcRequestData>(pkg);
             Log.LogInfo($"Получили тестовое сообщение от сервера: {data.message}");
 
             ZPackage package = new ZPackage();

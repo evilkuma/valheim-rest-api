@@ -1,7 +1,9 @@
 ﻿# build.ps1
 param(
     [string]$ValheimPath = "C:\Program Files (x86)\Steam\steamapps\common\Valheim dedicated server",
-    [string]$OutputDir = ".\Build"
+    [string]$OutputDir = ".\Build",
+    [string]$OutputDirServer = "C:\Program Files (x86)\Steam\steamapps\common\Valheim dedicated server\BepInEx\plugins\valheim-rest-api",
+    [string]$OutputDirClient = "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\plugins\valheim-rest-api"
 )
 
 Write-Host "=== Сборка Valheim Rest API Mods ===" -ForegroundColor Green
@@ -12,6 +14,14 @@ $env:VALHEIM_INSTALL = $ValheimPath
 # Создаем выходную директорию если её нет
 if (!(Test-Path $OutputDir)) {
     New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
+}
+
+if (!(Test-Path $OutputDirServer)) {
+    New-Item -ItemType Directory -Path $OutputDirServer -Force | Out-Null
+}
+
+if (!(Test-Path $OutputDirClient)) {
+    New-Item -ItemType Directory -Path $OutputDirClient -Force | Out-Null
 }
 
 # Функция для форматирования размера файла
@@ -75,6 +85,14 @@ if (Test-Path $clientDll) {
     Copy-Item $clientDll $OutputDir -Force
     Write-Host "Клиентский мод скопирован: $OutputDir\ValheimRestApi.Client.dll" -ForegroundColor Green
 }
+
+Copy-Item "$OutputDir\Client\ValheimRestApi.Client.dll" $OutputDirClient -Force
+Copy-Item "$OutputDir\Client\ValheimRestApi.Shared.dll" $OutputDirClient -Force
+Copy-Item "$OutputDir\Client\Newtonsoft.Json.dll" $OutputDirClient -Force
+
+Copy-Item "$OutputDir\Server\ValheimRestApi.Server.dll" $OutputDirServer -Force
+Copy-Item "$OutputDir\Server\ValheimRestApi.Shared.dll" $OutputDirServer -Force
+Copy-Item "$OutputDir\Server\Newtonsoft.Json.dll" $OutputDirServer -Force
 
 Write-Host "`nДля установки:" -ForegroundColor Yellow
 Write-Host "  Сервер: Скопируйте ValheimRestApi.Server.dll в BepInEx/plugins/ на сервере" -ForegroundColor White
