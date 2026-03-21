@@ -1,25 +1,31 @@
 
 using Newtonsoft.Json;
 
-namespace Shared.Models.Debug
+namespace Shared.Models
 {
-    public class DebugHttpData
+    public static class DebugData
     {
-        [JsonProperty("playerName")]
-        public string playerName { get; set; }
-        [JsonProperty("message")]
-        public string message { get; set; }
-    }
+        public static readonly string rpc = "ValheimRestApi/api/debug";
+        public static readonly string http = "/api/debug";
 
-    public class DebugRpcRequestData
-    {
-        [JsonProperty("message")]
-        public string message { get; set; }
-    }
+        public class HttpData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+            [JsonProperty("message")]
+            public string message { get; set; }
+        }
 
-    public class DebugRpcResponseData
-    {
-        [JsonProperty("status")]
-        public string message { get; set; }
+        public class RpcRequestData
+        {
+            [JsonProperty("message")]
+            public string message { get; set; }
+        }
+
+        public class RpcResponseData
+        {
+            [JsonProperty("status")]
+            public string message { get; set; }
+        }
     }
 }

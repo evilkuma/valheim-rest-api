@@ -29,9 +29,45 @@
 
 ## 📡 API Endpoints
 
-### Комманда проверки работоспособности
+### Отправка тестового сообщения клиенту
 ```bash
-GET /api/test
+POST /api/debug
+
+{
+    playerName: string,
+    message: string
+}
+
+RESPONSE
+
+{
+    status: "ok"
+}
+```
+
+### Получить содержимое инвентаря игрока
+```bash
+POST /api/inventory
+
+{
+    playerName: string
+}
+
+RESPONSE
+
+{
+    items: [
+        {
+            name: string,
+            prefabName: string,
+            stack: number,
+            quality: number,
+            durability: number,
+            isEquipable: boolean
+        },
+        ...
+    ]
+}
 ```
 
 ## 🛠️ Сборка из исходников

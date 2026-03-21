@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Shared;
+using Shared.Models;
 
 namespace ValheimRestApi.Server
 {
@@ -29,7 +30,8 @@ namespace ValheimRestApi.Server
 
         public HttpServer(int port)
         {
-            Events.Add("/api/test", ValheimRestApi.Server.Debug.Test);
+            Events.Add(DebugData.http, ValheimRestApi.Server.Debug.Test);
+            Events.Add(InventoryData.http, ValheimRestApi.Server.UseInventory.GetInventory);
 
             listener = new HttpListener();
             listener.Prefixes.Add($"http://*:{port}/");

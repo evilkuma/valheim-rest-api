@@ -3,13 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HarmonyLib;
+using Shared.Models;
 
 namespace Shared
 {
     public static class RpcManager
     {
         public static readonly string[] RpcList = {
-            "ValheimRestApi/api/test"
+            DebugData.rpc,
+            InventoryData.rpc
         }; 
 
         private static readonly Dictionary<string, TaskCompletionSource<ZPackage>> _tasks = new ();
