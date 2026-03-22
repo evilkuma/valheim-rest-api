@@ -70,6 +70,22 @@ RESPONSE
 }
 ```
 
+### Спавн игрового обьекта перед игроком (в планах больше параметров)
+```bash
+POST /api/spawn
+
+{
+    playerName: string,
+    prefabName: string
+}
+
+RESPONSE
+
+{
+    status: "ok" | string
+}
+```
+
 ## 🛠️ Сборка из исходников
 ### Windows
 ```bash

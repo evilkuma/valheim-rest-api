@@ -11,7 +11,8 @@ namespace Shared
     {
         public static readonly string[] RpcList = {
             DebugData.rpc,
-            InventoryData.rpc
+            InventoryData.rpc,
+            SpawnData.rpc
         }; 
 
         private static readonly Dictionary<string, TaskCompletionSource<ZPackage>> _tasks = new ();
