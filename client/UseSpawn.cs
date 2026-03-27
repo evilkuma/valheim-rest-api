@@ -15,23 +15,23 @@ namespace ValheimRestApi.Client
         private static void SpawnRPC(ZPackage pkg)
         {
             var data = JsonParser.ParsePkg<SpawnData.RpcRequestData>(pkg);
+            
             var prefabName = data.prefabName;
+            var amount = data.amount;
+            var level = data.level;
+            var pickup = data.pickup;
 
             Log.LogInfo($"Получили запрос на спавн {prefabName}");
 
-            var status = SpawnPrefab(prefabName);
+            var status = SpawnPrefab(prefabName, amount, level, pickup);
 
             ZPackage package = new ZPackage();
             package.Write($"{{ status: \"{status}\" }}");
             RpcManager.SendMessage(SpawnData.rpc, RpcManager.GetServerId(), package);
         }
 
-        private static string SpawnPrefab(string prefabName)
+        private static string SpawnPrefab(string prefabName, int amount, int level, bool pickup)
         {
-            int amount = 1;
-            int level = 1;
-            bool pickup = false;
-
             GameObject prefab = ZNetScene.instance.GetPrefab(prefabName);
             if (!prefab)
             {

@@ -29,13 +29,13 @@
 
 ## 📡 API Endpoints
 
-### Отправка тестового сообщения клиенту
+### Отправка тестового сообщения клиенту (вывод сообщения в консоль)
 ```bash
 POST /api/debug
 
 {
-    playerName: string,
-    message: string
+    playerName: string, // ник игрока
+    message: string     // текст сообщения
 }
 
 RESPONSE
@@ -50,7 +50,7 @@ RESPONSE
 POST /api/inventory
 
 {
-    playerName: string
+    playerName: string  // ник игрока
 }
 
 RESPONSE
@@ -75,8 +75,11 @@ RESPONSE
 POST /api/spawn
 
 {
-    playerName: string,
-    prefabName: string
+    playerName: string, // ник игрока
+    prefabName: string, // кодовое название предмета или моба
+    amount: number,     // количество предметов или мобов
+    level: number,      // уровень предмета или моба
+    pickup: boolean     // положить в инвентарь
 }
 
 RESPONSE
@@ -85,6 +88,35 @@ RESPONSE
     status: "ok" | string
 }
 ```
+
+### Комманды
+```bash
+POST /api/command
+
+{
+    playerName: string, // ник игрока
+    command: string,    // название комманды
+    data: string (json) // параметры сериализированные в json
+}
+```
+
+### Список комманд и типы данных
+- undress - снять снаряжение с игрока
+    ```bash
+    "
+    data:
+    {
+        // комманда без параметров
+    }
+
+    RESPONSE
+
+    {
+        status: "ok" | string
+    }
+    "
+    ```
+
 
 ## 🛠️ Сборка из исходников
 ### Windows

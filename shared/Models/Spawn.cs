@@ -14,12 +14,24 @@ namespace Shared.Models
             public string playerName { get; set; }
             [JsonProperty("prefabName")]
             public string prefabName { get; set; }
+            [JsonProperty("amount")]
+            public int amount { get; set; }
+            [JsonProperty("level")]
+            public int level { get; set; }
+            [JsonProperty("pickup")]
+            public bool pickup { get; set; }
         }
         
         public class RpcRequestData
         {
             [JsonProperty("prefabName")]
             public string prefabName { get; set; }
+            [JsonProperty("amount")]
+            public int amount { get; set; }
+            [JsonProperty("level")]
+            public int level { get; set; }
+            [JsonProperty("pickup")]
+            public bool pickup { get; set; }
         }
 
         public class RpcResponseData
