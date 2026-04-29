@@ -13,7 +13,8 @@ namespace Shared
             DebugData.rpc,
             InventoryData.rpc,
             SpawnData.rpc,
-            CommandData.rpc
+            CommandData.rpc,
+            LocationData.rpc
         }; 
 
         private static readonly Dictionary<string, TaskCompletionSource<ZPackage>> _tasks = new ();

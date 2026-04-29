@@ -7,7 +7,7 @@ namespace Shared
 {
     public static class JsonParser
     {
-        public static TResult ParseRequest<TResult>(HttpListenerRequest request)
+        public static TResult Parse<TResult>(HttpListenerRequest request)
         {
             string requestBody;
             using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
@@ -19,8 +19,13 @@ namespace Shared
 
             return data;
         }
+        
+        public static TResult Parse<TResult>(string value)
+        {
+            return JsonConvert.DeserializeObject<TResult>(value);
+        }
 
-        public static TResult ParsePkg<TResult>(ZPackage pkg)
+        public static TResult Parse<TResult>(ZPackage pkg)
         {
             string jsonData = pkg.ReadString();
             var data = JsonConvert.DeserializeObject<TResult>(jsonData);

@@ -89,6 +89,19 @@ RESPONSE
 }
 ```
 
+### Телепорт игрока по названию биома
+```bash
+POST /api/location
+
+{
+    action: "teleportToBiome",
+    data: string<json> {
+        playerName: string,
+        biome: "Meadows" | "Swamp" | "Mountain" | "BlackForest" | "Plains" | "AshLands" | "DeepNorth" | "Ocean" | "Mistlands"
+    }
+}
+```
+
 ### Комманды
 ```bash
 POST /api/command

@@ -34,6 +34,7 @@ namespace ValheimRestApi.Server
             Events.Add(InventoryData.http, ValheimRestApi.Server.UseInventory.GetInventory);
             Events.Add(SpawnData.http, ValheimRestApi.Server.UseSpawn.SpawnHttp);
             Events.Add(CommandData.http, ValheimRestApi.Server.UseCommand.CommandHttp);
+            Events.Add(LocationData.http, ValheimRestApi.Server.UseLocation.LocationHttp);
 
             listener = new HttpListener();
             listener.Prefixes.Add($"http://*:{port}/");

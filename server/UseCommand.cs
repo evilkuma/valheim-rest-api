@@ -12,7 +12,7 @@ namespace ValheimRestApi.Server
         {
             if (args is HttpEventArgs dataArgs)
             {
-                var data = JsonParser.ParseRequest<CommandData.HttpData>(dataArgs.Request);
+                var data = JsonParser.Parse<CommandData.HttpData>(dataArgs.Request);
                 
                 string playerName = data.playerName;
                 
@@ -29,7 +29,7 @@ namespace ValheimRestApi.Server
                 package.Write(json);
 
                 var zData = await RpcManager.SendMessageAsync(CommandData.rpc, targetPeer.m_uid, package).Task;
-                return JsonParser.ParsePkg<CommandData.RpcResponseData>(zData);
+                return JsonParser.Parse<CommandData.RpcResponseData>(zData);
             }
 
             return new { error = "no data" };

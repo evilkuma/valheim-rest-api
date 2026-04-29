@@ -25,7 +25,7 @@ namespace ValheimRestApi.Client
 
         private static void CommandRPC(ZPackage pkg)
         {
-            var data = JsonParser.ParsePkg<CommandData.RpcRequestData>(pkg);
+            var data = JsonParser.Parse<CommandData.RpcRequestData>(pkg);
 
             if (_commands.TryGetValue(data.command, out var func))
             {

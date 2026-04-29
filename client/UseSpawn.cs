@@ -14,7 +14,7 @@ namespace ValheimRestApi.Client
 
         private static void SpawnRPC(ZPackage pkg)
         {
-            var data = JsonParser.ParsePkg<SpawnData.RpcRequestData>(pkg);
+            var data = JsonParser.Parse<SpawnData.RpcRequestData>(pkg);
             
             var prefabName = data.prefabName;
             var amount = data.amount;

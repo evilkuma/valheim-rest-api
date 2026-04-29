@@ -13,7 +13,7 @@ namespace ValheimRestApi.Client
 
         private static void Test(ZPackage pkg)
         {
-            var data = JsonParser.ParsePkg<DebugData.RpcRequestData>(pkg);
+            var data = JsonParser.Parse<DebugData.RpcRequestData>(pkg);
             Log.LogInfo($"Получили тестовое сообщение от сервера: {data.message}");
 
             ZPackage package = new ZPackage();

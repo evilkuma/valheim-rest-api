@@ -20,6 +20,7 @@ namespace ValheimRestApi.Client
             UseInventory.Initialize();
             UseSpawn.Initialize();
             UseCommand.Initialize();
+            UseLocation.Initialize();
 
             Log.LogInfo("=== Valheim Inventory API Client загружен ===");
         }
