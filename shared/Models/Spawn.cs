@@ -20,6 +20,18 @@ namespace Shared.Models
             [JsonProperty("pickup")]
             public bool pickup { get; set; }
         }
+
+        public class ActionWoodenPrisonData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+        }
+
+        public class ActionStonePrisonData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+        }
         
         public class RpcRequestData
         {
