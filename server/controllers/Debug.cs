@@ -18,11 +18,17 @@ namespace ValheimRestApi.Server
             var targetPeer = RpcManager.FindPlayerByName(data.playerName);
             if (targetPeer == null) return new { error = "no player peer" };
 
-            ZPackage package = new ZPackage();
-            package.Write($"{{ message: \"{data.message}\" }}");
-
-            var zData = await RpcManager.SendMessageAsync(DebugData.rpc, targetPeer.m_uid, package).Task;
-            return JsonParser.Parse<DebugData.RpcResponseData>(zData);
+            var zData = await RpcManager.SendMessageAsync(DebugData.rpc, targetPeer.m_uid, 
+                new RpcRequestData<DebugData.RpcRequestMainData>
+                {
+                    action = "terminal-message",
+                    data = new DebugData.RpcRequestMainData
+                    {
+                        message = data.message
+                    }
+                }
+            ).Task;
+            return JsonParser.Parse<DebugData.RpcResponseMainData>(zData);
         }
     }
 }

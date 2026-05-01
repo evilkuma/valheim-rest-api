@@ -91,14 +91,17 @@ RESPONSE
 
 ### Телепорт игрока по названию биома
 ```bash
-POST /api/location
+POST /api/location/teleport-to-biome
 
 {
-    action: "teleportToBiome",
-    data: string<json> {
-        playerName: string,
-        biome: "Meadows" | "Swamp" | "Mountain" | "BlackForest" | "Plains" | "AshLands" | "DeepNorth" | "Ocean" | "Mistlands"
-    }
+    playerName: string,
+    biome: "Meadows" | "Swamp" | "Mountain" | "BlackForest" | "Plains" | "AshLands" | "DeepNorth" | "Ocean" | "Mistlands"
+}
+
+RESPONSE
+
+{
+    status: "ok" | string
 }
 ```
 
@@ -109,7 +112,7 @@ POST /api/command
 {
     playerName: string, // ник игрока
     command: string,    // название комманды
-    data: string (json) // параметры сериализированные в json
+    data: {}            // параметры комманды
 }
 ```
 

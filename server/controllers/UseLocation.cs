@@ -11,7 +11,7 @@ namespace ValheimRestApi.Server
         public UseLocation() : base()
         {
             http = "/api/location";
-            RegisterAction<LocationData.ActionTeleportToBiomeData>("teleportToBiome", ActionTeleportToBiome);
+            RegisterAction<LocationData.ActionTeleportToBiomeData>("teleport-to-biome", ActionTeleportToBiome);
         }
 
         private async Task<object> ActionTeleportToBiome(LocationData.ActionTeleportToBiomeData data)
@@ -47,20 +47,17 @@ namespace ValheimRestApi.Server
 
             if (distance == float.MaxValue) return new { error = "no finded location" };
 
-            string x = targetPosition.x.ToString().Replace(",", ".");
-            string y = targetPosition.y.ToString().Replace(",", ".");
-            string z = targetPosition.z.ToString().Replace(",", ".");
-
-            string json = JsonParser.Serialize(new LocationData.RpcRequestData
-            {
-                action = "teleportTo",
-                data = $"{{ \"x\": {x}, \"y\": {y}, \"z\": {z} }}"
-            });
-
-            ZPackage package = new ZPackage();
-            package.Write(json);
-
-            var zData = await RpcManager.SendMessageAsync(LocationData.rpc, targetPeer.m_uid, package).Task;
+            var zData = await RpcManager.SendMessageAsync(LocationData.rpc, targetPeer.m_uid,
+                new RpcRequestData<LocationData.ActionTeleportToData>
+                {
+                    action = "teleport-to",
+                    data = new LocationData.ActionTeleportToData {
+                        x = targetPosition.x,
+                        y = targetPosition.y,
+                        z = targetPosition.z
+                    }
+                }
+            ).Task;
             return JsonParser.Parse<LocationData.RpcResponseData>(zData);
         }
     }

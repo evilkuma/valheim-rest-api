@@ -14,6 +14,8 @@ namespace Shared.Models
             public string playerName { get; set; }
         }
 
+        public class RpcRequestMainData {}
+
         public class Item
         {
             [JsonProperty("name")]

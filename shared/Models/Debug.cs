@@ -15,13 +15,13 @@ namespace Shared.Models
             public string message { get; set; }
         }
 
-        public class RpcRequestData
+        public class RpcRequestMainData
         {
             [JsonProperty("message")]
             public string message { get; set; }
         }
 
-        public class RpcResponseData
+        public class RpcResponseMainData
         {
             [JsonProperty("status")]
             public string status { get; set; }

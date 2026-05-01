@@ -16,11 +16,7 @@ namespace ValheimRestApi.Client
             Log.Initialize(base.Logger);
             RpcManager.Initialize();
 
-            Debug.Initialize();
-            UseInventory.Initialize();
-            UseSpawn.Initialize();
-            UseCommand.Initialize();
-            UseLocation.Initialize();
+            RpcController.Init();
 
             Log.LogInfo("=== Valheim Inventory API Client загружен ===");
         }

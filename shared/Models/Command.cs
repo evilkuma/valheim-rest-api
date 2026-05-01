@@ -24,6 +24,8 @@ namespace Shared.Models
             [JsonProperty("data")]
             public string data { get; set; }
         }
+
+        public class RpcRequestMainData {}
         
         public class RpcResponseData
         {

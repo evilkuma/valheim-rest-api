@@ -82,8 +82,24 @@ namespace Shared
             return tcs;
         }
 
+        public static TaskCompletionSource<ZPackage> SendMessageAsync(string eventName, long playerUID, object data)
+        {
+            ZPackage package = new ZPackage();
+            package.Write(JsonParser.Serialize(data));
+
+            return SendMessageAsync(eventName, playerUID, package);
+        }
+
         public static void SendMessage(string eventName, long playerUID, ZPackage package)
         {
+            ZRoutedRpc.instance.InvokeRoutedRPC(playerUID, eventName, package);
+        }
+
+        public static void SendMessage(string eventName, long playerUID, object data)
+        {
+            ZPackage package = new ZPackage();
+            package.Write(JsonParser.Serialize(data));
+            
             ZRoutedRpc.instance.InvokeRoutedRPC(playerUID, eventName, package);
         }
     }

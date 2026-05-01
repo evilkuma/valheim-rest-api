@@ -18,9 +18,13 @@ namespace ValheimRestApi.Server
             var targetPeer = RpcManager.FindPlayerByName(data.playerName);
             if (targetPeer == null) return new { error = "no player peer" };
 
-            ZPackage package = new ZPackage();
-
-            var zData = await RpcManager.SendMessageAsync(InventoryData.rpc, targetPeer.m_uid, package).Task;
+            var zData = await RpcManager.SendMessageAsync(InventoryData.rpc, targetPeer.m_uid,
+                new RpcRequestData<InventoryData.RpcRequestMainData>
+                {
+                    action = "get-inventory",
+                    data = new InventoryData.RpcRequestMainData {}
+                }
+            ).Task;
             return JsonParser.Parse<InventoryData.RpcResponseData>(zData);
         }
     }

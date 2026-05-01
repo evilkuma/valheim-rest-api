@@ -5,17 +5,16 @@ using UnityEngine;
 
 namespace ValheimRestApi.Client
 {
-    public static class UseSpawn
+    public class UseSpawn : RpcController
     {
-        public static void Initialize()
+        public UseSpawn()
         {
-            RpcManager.AddListener(SpawnData.rpc, SpawnRPC);
+            rpc = SpawnData.rpc;
+            RegisterAction<SpawnData.RpcRequestData>("main", Spawn);
         }
 
-        private static void SpawnRPC(ZPackage pkg)
+        private object Spawn(SpawnData.RpcRequestData data)
         {
-            var data = JsonParser.Parse<SpawnData.RpcRequestData>(pkg);
-            
             var prefabName = data.prefabName;
             var amount = data.amount;
             var level = data.level;
@@ -25,9 +24,7 @@ namespace ValheimRestApi.Client
 
             var status = SpawnPrefab(prefabName, amount, level, pickup);
 
-            ZPackage package = new ZPackage();
-            package.Write($"{{ status: \"{status}\" }}");
-            RpcManager.SendMessage(SpawnData.rpc, RpcManager.GetServerId(), package);
+            return new { status };
         }
 
         private static string SpawnPrefab(string prefabName, int amount, int level, bool pickup)
