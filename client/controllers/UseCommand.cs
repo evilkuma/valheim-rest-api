@@ -5,7 +5,7 @@ using System.Linq;
 using Shared;
 using Shared.Models;
 
-namespace ValheimRestApi.Client
+namespace ValheimStreamerApi.Client
 {
     public class UseCommand : RpcController
     {

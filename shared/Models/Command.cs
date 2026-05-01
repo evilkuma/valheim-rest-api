@@ -5,7 +5,7 @@ namespace Shared.Models
 {
     public static class CommandData
     {
-        public static readonly string rpc = "ValheimRestApi/api/command";
+        public static readonly string rpc = "ValheimStreamerApi/api/command";
 
         public class ActionMainData
         {

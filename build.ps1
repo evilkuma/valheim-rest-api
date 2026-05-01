@@ -2,11 +2,11 @@
 param(
     [string]$ValheimPath = "C:\Program Files (x86)\Steam\steamapps\common\Valheim dedicated server",
     [string]$OutputDir = ".\Build",
-    [string]$OutputDirServer = "C:\Program Files (x86)\Steam\steamapps\common\Valheim dedicated server\BepInEx\plugins\valheim-rest-api",
-    [string]$OutputDirClient = "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\plugins\valheim-rest-api"
+    [string]$OutputDirServer = "C:\Program Files (x86)\Steam\steamapps\common\Valheim dedicated server\BepInEx\plugins\valheim-streamer-api",
+    [string]$OutputDirClient = "C:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\plugins\valheim-streamer-api"
 )
 
-Write-Host "=== Сборка Valheim Rest API Mods ===" -ForegroundColor Green
+Write-Host "=== Сборка Valheim Streamer API Mods ===" -ForegroundColor Green
 
 # Устанавливаем переменную окружения для сборки
 $env:VALHEIM_INSTALL = $ValheimPath
@@ -73,27 +73,27 @@ Get-ChildItem $OutputDir -Filter "*.dll" | ForEach-Object {
 }
 
 # Копируем файлы если они не в выходной директории
-$serverDll = ".\server\bin\Release\net48\ValheimRestApi.Server.dll"
-$clientDll = ".\client\bin\Release\net48\ValheimRestApi.Client.dll"
+$serverDll = ".\server\bin\Release\net48\ValheimStreamerApi.Server.dll"
+$clientDll = ".\client\bin\Release\net48\ValheimStreamerApi.Client.dll"
 
 if (Test-Path $serverDll) {
     Copy-Item $serverDll $OutputDir -Force
-    Write-Host "`nСерверный мод скопирован: $OutputDir\ValheimRestApi.Server.dll" -ForegroundColor Green
+    Write-Host "`nСерверный мод скопирован: $OutputDir\ValheimStreamerApi.Server.dll" -ForegroundColor Green
 }
 
 if (Test-Path $clientDll) {
     Copy-Item $clientDll $OutputDir -Force
-    Write-Host "Клиентский мод скопирован: $OutputDir\ValheimRestApi.Client.dll" -ForegroundColor Green
+    Write-Host "Клиентский мод скопирован: $OutputDir\ValheimStreamerApi.Client.dll" -ForegroundColor Green
 }
 
-Copy-Item "$OutputDir\Client\ValheimRestApi.Client.dll" $OutputDirClient -Force
-Copy-Item "$OutputDir\Client\ValheimRestApi.Shared.dll" $OutputDirClient -Force
+Copy-Item "$OutputDir\Client\ValheimStreamerApi.Client.dll" $OutputDirClient -Force
+Copy-Item "$OutputDir\Client\ValheimStreamerApi.Shared.dll" $OutputDirClient -Force
 Copy-Item "$OutputDir\Client\Newtonsoft.Json.dll" $OutputDirClient -Force
 
-Copy-Item "$OutputDir\Server\ValheimRestApi.Server.dll" $OutputDirServer -Force
-Copy-Item "$OutputDir\Server\ValheimRestApi.Shared.dll" $OutputDirServer -Force
+Copy-Item "$OutputDir\Server\ValheimStreamerApi.Server.dll" $OutputDirServer -Force
+Copy-Item "$OutputDir\Server\ValheimStreamerApi.Shared.dll" $OutputDirServer -Force
 Copy-Item "$OutputDir\Server\Newtonsoft.Json.dll" $OutputDirServer -Force
 
 Write-Host "`nДля установки:" -ForegroundColor Yellow
-Write-Host "  Сервер: Скопируйте ValheimRestApi.Server.dll в BepInEx/plugins/ на сервере" -ForegroundColor White
-Write-Host "  Клиент: Скопируйте ValheimRestApi.Client.dll в BepInEx/plugins/ каждому игроку" -ForegroundColor White
+Write-Host "  Сервер: Скопируйте ValheimStreamerApi.Server.dll в BepInEx/plugins/ на сервере" -ForegroundColor White
+Write-Host "  Клиент: Скопируйте ValheimStreamerApi.Client.dll в BepInEx/plugins/ каждому игроку" -ForegroundColor White

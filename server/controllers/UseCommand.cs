@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Shared;
 using Shared.Models;
 
-namespace ValheimRestApi.Server
+namespace ValheimStreamerApi.Server
 {
     public class UseCommand : HttpController<CommandData.ActionMainData>
     {

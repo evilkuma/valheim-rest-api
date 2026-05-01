@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Shared;
 
-namespace ValheimRestApi.Server
+namespace ValheimStreamerApi.Server
 {
     public abstract class HttpController
     {

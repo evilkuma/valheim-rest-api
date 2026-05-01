@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Shared;
 using Shared.Models;
 
-namespace ValheimRestApi.Client
+namespace ValheimStreamerApi.Client
 {
     public abstract class RpcController
     {

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Shared;
 
-namespace ValheimRestApi.Server
+namespace ValheimStreamerApi.Server
 {
     public class HttpEventArgs : EventArgs
     {

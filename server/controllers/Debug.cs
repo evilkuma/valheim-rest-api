@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Shared;
 using Shared.Models;
 
-namespace ValheimRestApi.Server
+namespace ValheimStreamerApi.Server
 {
     public class Debug : HttpController<DebugData.ActionMainData>
     {

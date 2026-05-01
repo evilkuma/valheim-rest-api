@@ -2,7 +2,7 @@
 using Shared;
 using Shared.Models;
 
-namespace ValheimRestApi.Client
+namespace ValheimStreamerApi.Client
 {
     public class Debug : RpcController
     {

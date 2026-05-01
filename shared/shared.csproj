@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyName>ValheimRestApi.Shared</AssemblyName>
+    <AssemblyName>ValheimStreamerApi.Shared</AssemblyName>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

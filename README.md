@@ -1,6 +1,6 @@
 # ⚠️ В активной разработке ⚠️
 
-# valheim-rest-api
+# valheim-streamer-api
 Мод для игры Valheim. Суть мода в проведении специальных действий в игровом мире путем отправки серверу с игрой http запросов.
 
 ## 📦 Состав мода
@@ -145,7 +145,7 @@ POST /api/command
 ```
 
 ## ⚙️ Конфигурация
-Порт HTTP сервера можно изменить в конфигурации BepInEx (BepInEx\config\ru.evilkuma.valheimrestapi.server.cfg)
+Порт HTTP сервера можно изменить в конфигурации BepInEx (BepInEx\config\ru.evilkuma.valheimstreamerapi.server.cfg)
 
 ## 📋 Логи
 Логи пишутся в стандартный вывод BepInEx (консоль сервера/игры).

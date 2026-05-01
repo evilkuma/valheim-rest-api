@@ -4,7 +4,7 @@ using Shared;
 using Shared.Models;
 using UnityEngine;
 
-namespace ValheimRestApi.Server
+namespace ValheimStreamerApi.Server
 {
     public class UseLocation : HttpController
     {

@@ -2,12 +2,12 @@ using BepInEx;
 using BepInEx.Configuration;
 using Shared;
 
-namespace ValheimRestApi.Server
+namespace ValheimStreamerApi.Server
 {
-    [BepInPlugin("ru.evilkuma.valheimrestapi.server", "Valheim Rest API Server", "1.0.0")]
-    public class ValheimRestAPIPlugin : BaseUnityPlugin
+    [BepInPlugin("ru.evilkuma.valheimstreamerapi.server", "Valheim Streamer API Server", "1.0.0")]
+    public class ValheimStreamerAPIPlugin : BaseUnityPlugin
     {
-        public static ValheimRestAPIPlugin instance;
+        public static ValheimStreamerAPIPlugin instance;
 
         private HttpServer httpServer;
 
@@ -28,7 +28,7 @@ namespace ValheimRestApi.Server
             httpServer = new HttpServer(port.Value);
             httpServer.Start();
 
-            Log.LogInfo("=== Valheim Rest API Server загружен ===");
+            Log.LogInfo("=== Valheim Streamer API Server загружен ===");
             Log.LogInfo($"HTTP Server: http://localhost:{port.Value}");
         }
 

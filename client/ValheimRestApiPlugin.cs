@@ -2,12 +2,12 @@ using BepInEx;
 using Shared;
 using Shared.Models;
 
-namespace ValheimRestApi.Client
+namespace ValheimStreamerApi.Client
 {
-    [BepInPlugin("ru.evilkuma.valheimrestapi.client", "Valheim Rest API Client", "1.0.0")]
-    public class ValheimRestAPIPlugin : BaseUnityPlugin
+    [BepInPlugin("ru.evilkuma.valheimstreamerapi.client", "Valheim Streamer API Client", "1.0.0")]
+    public class ValheimStreamerAPIPlugin : BaseUnityPlugin
     {
-        public static ValheimRestAPIPlugin instance;
+        public static ValheimStreamerAPIPlugin instance;
         
         private void Awake()
         {

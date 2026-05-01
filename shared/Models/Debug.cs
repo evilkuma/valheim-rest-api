@@ -5,7 +5,7 @@ namespace Shared.Models
 {
     public static class DebugData
     {
-        public static readonly string rpc = "ValheimRestApi/api/debug";
+        public static readonly string rpc = "ValheimStreamerApi/api/debug";
 
         public class ActionMainData
         {

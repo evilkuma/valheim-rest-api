@@ -3,7 +3,7 @@ using Shared;
 using Shared.Models;
 using UnityEngine;
 
-namespace ValheimRestApi.Client
+namespace ValheimStreamerApi.Client
 {
     public class UseLocation : RpcController
     {
