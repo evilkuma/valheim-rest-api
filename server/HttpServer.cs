@@ -1,10 +1,11 @@
 using System;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Shared;
-using Shared.Models;
 
 namespace ValheimRestApi.Server
 {
@@ -12,11 +13,13 @@ namespace ValheimRestApi.Server
     {
         public HttpListenerRequest Request { get; }
         public HttpListenerResponse Response { get; }
+        public string Action { get; }
 
-        public HttpEventArgs(HttpListenerRequest request, HttpListenerResponse response)
+        public HttpEventArgs(HttpListenerRequest request, HttpListenerResponse response, string action = null)
         {
             Request = request;
             Response = response;
+            Action = action;
         }
     }
 
@@ -30,11 +33,21 @@ namespace ValheimRestApi.Server
 
         public HttpServer(int port)
         {
-            Events.Add(DebugData.http, ValheimRestApi.Server.Debug.Test);
-            Events.Add(InventoryData.http, ValheimRestApi.Server.UseInventory.GetInventory);
-            Events.Add(SpawnData.http, ValheimRestApi.Server.UseSpawn.SpawnHttp);
-            Events.Add(CommandData.http, ValheimRestApi.Server.UseCommand.CommandHttp);
-            Events.Add(LocationData.http, ValheimRestApi.Server.UseLocation.LocationHttp);
+            var controllerType = typeof(HttpController);
+            var controllers = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(t => !t.IsAbstract && controllerType.IsAssignableFrom(t));
+
+            foreach (var type in controllers)
+            {
+                var controller = (HttpController)Activator.CreateInstance(type);
+                if (string.IsNullOrEmpty(controller.http))
+                {
+                    Log.LogError($"Controller {type.Name} has no http route, skipping");
+                    continue;
+                }
+                Events.Add(controller.http, controller.Handle);
+                Log.LogInfo($"Registered controller: {type.Name} -> {controller.http}");
+            }
 
             listener = new HttpListener();
             listener.Prefixes.Add($"http://*:{port}/");
@@ -100,10 +113,10 @@ namespace ValheimRestApi.Server
                     return;
                 }
 
-                string eventName = request.Url.AbsolutePath.ToLower();
-                if (Events.HasEvent(eventName))
+                var (eventName, action) = ParsePath(request.Url.AbsolutePath);
+                if (eventName != null)
                 {
-                    object result = await Events.Dispatch<object>(request.Url.AbsolutePath.ToLower(), this, new HttpEventArgs(request, response));
+                    object result = await Events.Dispatch<object>(eventName, this, new HttpEventArgs(request, response, action));
                     await WriteJsonResponse(response, result);
                 }
                 else
@@ -122,6 +135,26 @@ namespace ValheimRestApi.Server
             {
                 response.Close();
             }
+        }
+
+        private (string eventName, string action) ParsePath(string absolutePath)
+        {
+            string path = absolutePath.ToLower().TrimEnd('/');
+
+            if (Events.HasEvent(path))
+                return (path, null);
+
+            int lastSlash = path.LastIndexOf('/');
+            if (lastSlash > 0)
+            {
+                string basePath = path.Substring(0, lastSlash);
+                string action = absolutePath.TrimEnd('/').Substring(lastSlash + 1);
+
+                if (Events.HasEvent(basePath))
+                    return (basePath, action);
+            }
+
+            return (null, null);
         }
 
         private async Task WriteJsonResponse(HttpListenerResponse response, object data)

@@ -19,15 +19,6 @@ namespace Shared.Models
     public static class LocationData
     {
         public static readonly string rpc = "ValheimRestApi/api/location";
-        public static readonly string http = "/api/location";
-
-        public class HttpData
-        {
-            [JsonProperty("action")]
-            public string action { get; set; }
-            [JsonProperty("data")]
-            public string data { get; set; }
-        }
 
         public class RpcRequestData
         {

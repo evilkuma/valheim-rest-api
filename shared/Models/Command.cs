@@ -6,9 +6,8 @@ namespace Shared.Models
     public static class CommandData
     {
         public static readonly string rpc = "ValheimRestApi/api/command";
-        public static readonly string http = "/api/command";
 
-        public class HttpData
+        public class ActionMainData
         {
             [JsonProperty("playerName")]
             public string playerName { get; set; }

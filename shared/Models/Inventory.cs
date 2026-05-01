@@ -7,9 +7,8 @@ namespace Shared.Models
     public static class InventoryData
     {
         public static readonly string rpc = "ValheimRestApi/api/inventory";
-        public static readonly string http = "/api/inventory";
 
-        public class HttpData
+        public class ActionMainData
         {
             [JsonProperty("playerName")]
             public string playerName { get; set; }

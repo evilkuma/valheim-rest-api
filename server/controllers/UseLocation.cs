@@ -1,6 +1,4 @@
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shared;
 using Shared.Models;
@@ -8,30 +6,19 @@ using UnityEngine;
 
 namespace ValheimRestApi.Server
 {
-    public class UseLocation
+    public class UseLocation : HttpController
     {
-        public static async Task<object> LocationHttp(object sender, EventArgs args)
+        public UseLocation() : base()
         {
-            if (args is HttpEventArgs dataArgs)
-            {
-                var data = JsonParser.Parse<LocationData.HttpData>(dataArgs.Request);
-
-                string action = data.action;
-
-                if (action.Equals("teleportToBiome"))
-                {
-                    var actionData = JsonParser.Parse<LocationData.ActionTeleportToBiomeData>(data.data);
-                    return await TeleportToBiome(actionData.playerName, actionData.biome);
-                }
-
-                return new { error = "undefined action" };
-            }
-            
-            return new { error = "no data" };
+            http = "/api/location";
+            RegisterAction<LocationData.ActionTeleportToBiomeData>("teleportToBiome", ActionTeleportToBiome);
         }
 
-        private static async Task<object> TeleportToBiome(string playerName, string biomeName)
+        private async Task<object> ActionTeleportToBiome(LocationData.ActionTeleportToBiomeData data)
         {
+            string playerName = data.playerName;
+            string biomeName = data.biome;
+
             var targetPeer = RpcManager.FindPlayerByName(playerName);
             if (targetPeer == null) return new { error = "no player peer" };
 
@@ -72,7 +59,7 @@ namespace ValheimRestApi.Server
 
             ZPackage package = new ZPackage();
             package.Write(json);
-            
+
             var zData = await RpcManager.SendMessageAsync(LocationData.rpc, targetPeer.m_uid, package).Task;
             return JsonParser.Parse<LocationData.RpcResponseData>(zData);
         }

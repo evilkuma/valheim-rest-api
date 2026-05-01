@@ -6,9 +6,8 @@ namespace Shared.Models
     public static class SpawnData
     {
         public static readonly string rpc = "ValheimRestApi/api/spawn";
-        public static readonly string http = "/api/spawn";
 
-        public class HttpData
+        public class ActionMainData
         {
             [JsonProperty("playerName")]
             public string playerName { get; set; }
