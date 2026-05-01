@@ -1,4 +1,5 @@
 using BepInEx;
+using BepInEx.Configuration;
 using Shared;
 
 namespace ValheimRestApi.Server
@@ -7,7 +8,7 @@ namespace ValheimRestApi.Server
     public class ValheimRestAPIPlugin : BaseUnityPlugin
     {
         public static ValheimRestAPIPlugin instance;
-        
+
         private HttpServer httpServer;
 
         private void Awake()
@@ -16,12 +17,19 @@ namespace ValheimRestApi.Server
 
             Log.Initialize(base.Logger);
             RpcManager.Initialize();
-            
-            httpServer = new HttpServer(8080);
+
+            var port = Config.Bind(
+                "Server",
+                "Port",
+                8080,
+                "HTTP server port. Change requires server restart."
+            );
+
+            httpServer = new HttpServer(port.Value);
             httpServer.Start();
 
             Log.LogInfo("=== Valheim Rest API Server загружен ===");
-            Log.LogInfo("HTTP Server: http://localhost:8080");
+            Log.LogInfo($"HTTP Server: http://localhost:{port.Value}");
         }
 
         private void OnDestroy()
