@@ -1,4 +1,5 @@
 
+using System.Collections;
 using Shared;
 using Shared.Models;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace ValheimStreamerApi.Client
             RegisterAction<SpawnData.RpcRequestData>("main", Spawn);
             RegisterAction<object>("wooden-prison", WoodenPrison);
             RegisterAction<object>("stone-prison", StonePrison);
+            RegisterAction<object>("golden-rain", GoldenRain);
         }
 
         private object Spawn(SpawnData.RpcRequestData data)
@@ -97,6 +99,54 @@ namespace ValheimStreamerApi.Client
             }
             
             return new { status = "ok" };
+        }
+
+        private object GoldenRain(object _data)
+        {
+            Player.m_localPlayer.StartCoroutine(CoinRainRoutine());
+
+            return new { status = "ok" };
+        }
+
+        private static IEnumerator CoinRainRoutine()
+        {
+            const string prefabName = "Coins";
+            const int iterations = 20;
+            const int stackSize = 25;
+            const float interval = 0.15f;
+            const float spawnHeight = 13f;
+            const float spreadRadius = 2.5f;
+
+            GameObject prefab = ZNetScene.instance.GetPrefab(prefabName);
+            if (prefab == null) yield break;
+
+            for (int i = 0; i < iterations; i++)
+            {
+                Player player = Player.m_localPlayer;
+                if (player == null) yield break;
+
+                Vector2 spread = UnityEngine.Random.insideUnitCircle * spreadRadius;
+                Vector3 position = new Vector3(
+                    player.transform.position.x + spread.x,
+                    player.transform.position.y + spawnHeight,
+                    player.transform.position.z + spread.y
+                );
+
+                GameObject go = GameObject.Instantiate(prefab, position, Quaternion.identity);
+
+                ItemDrop itemDrop = go.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                    itemDrop.m_itemData.m_stack = stackSize;
+
+                Rigidbody rb = go.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    Vector2 impulse = UnityEngine.Random.insideUnitCircle * 2f;
+                    rb.linearVelocity = new Vector3(impulse.x, 0f, impulse.y);
+                }
+
+                yield return new WaitForSeconds(interval);
+            }
         }
 
         private static string SpawnPrefab(string prefabName, int amount, int level, bool pickup)

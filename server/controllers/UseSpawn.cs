@@ -13,6 +13,7 @@ namespace ValheimStreamerApi.Server
             http = "/api/spawn";
             RegisterAction<SpawnData.ActionWoodenPrisonData>("wooden-prison", ActionWoodenPrison);
             RegisterAction<SpawnData.ActionStonePrisonData>("stone-prison", ActionStonePrison);
+            RegisterAction<SpawnData.ActionGoldenRainData>("golden-rain", ActionGoldenRain);
         }
 
         protected override async Task<object> Action(SpawnData.ActionMainData data)
@@ -64,6 +65,23 @@ namespace ValheimStreamerApi.Server
                 new RpcRequestData<object>
                 {
                     action = "stone-prison",
+                    data = new {}
+                }
+            ).Task;
+            return JsonParser.Parse<SpawnData.RpcResponseData>(zData);
+        }
+        
+        private async Task<object> ActionGoldenRain(SpawnData.ActionGoldenRainData data)
+        {
+            string playerName = data.playerName;
+            
+            var targetPeer = RpcManager.FindPlayerByName(playerName);
+            if (targetPeer == null) return new { error = "no player peer" };
+
+            var zData = await RpcManager.SendMessageAsync(SpawnData.rpc, targetPeer.m_uid,
+                new RpcRequestData<object>
+                {
+                    action = "golden-rain",
                     data = new {}
                 }
             ).Task;

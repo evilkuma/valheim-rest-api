@@ -32,6 +32,12 @@ namespace Shared.Models
             [JsonProperty("playerName")]
             public string playerName { get; set; }
         }
+
+        public class ActionGoldenRainData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+        }
         
         public class RpcRequestData
         {
