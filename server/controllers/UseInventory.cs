@@ -11,6 +11,7 @@ namespace ValheimStreamerApi.Server
         public UseInventory() : base()
         {
             http = "/api/inventory";
+            RegisterAction<InventoryData.ActionDisarmamentData>("disarmament", Disarmament);
         }
 
         protected override async Task<object> Action(InventoryData.ActionMainData data)
@@ -26,6 +27,21 @@ namespace ValheimStreamerApi.Server
                 }
             ).Task;
             return JsonParser.Parse<InventoryData.RpcResponseData>(zData);
+        }
+
+        private async Task<object> Disarmament(InventoryData.ActionDisarmamentData data)
+        {
+            var targetPeer = RpcManager.FindPlayerByName(data.playerName);
+            if (targetPeer == null) return new { error = "no player peer" };
+
+            var zData = await RpcManager.SendMessageAsync(InventoryData.rpc, targetPeer.m_uid,
+                new RpcRequestData<object>
+                {
+                    action = "disarmament",
+                    data = new {}
+                }
+            ).Task;
+            return JsonParser.Parse<InventoryData.RpcStatusData>(zData);
         }
     }
 }

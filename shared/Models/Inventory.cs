@@ -16,6 +16,12 @@ namespace Shared.Models
 
         public class RpcRequestMainData {}
 
+        public class ActionDisarmamentData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+        }
+
         public class Item
         {
             [JsonProperty("name")]
@@ -38,6 +44,12 @@ namespace Shared.Models
             public List<Item> items { get; set; }
             [JsonProperty("count")]
             public int count { get; set; }
+        }
+
+        public class RpcStatusData
+        {
+            [JsonProperty("status")]
+            public string status { get; set; }
         }
     }
 }
