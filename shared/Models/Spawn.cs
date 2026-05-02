@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Shared.Models
@@ -37,6 +38,28 @@ namespace Shared.Models
         {
             [JsonProperty("playerName")]
             public string playerName { get; set; }
+        }
+        
+        public class ActionStarterKitData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+        }
+
+        public class ChestItemData
+        {
+            [JsonProperty("name")]
+            public string name { get; set; }
+            [JsonProperty("amount")]
+            public int amount { get; set; }
+        }
+
+        public class RpcActionChestData
+        {
+            [JsonProperty("chest")]
+            public string chest { get; set; }
+            [JsonProperty("items")]
+            public List<ChestItemData> items { get; set; }
         }
         
         public class RpcRequestData

@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shared;
 using Shared.Models;
@@ -14,6 +15,7 @@ namespace ValheimStreamerApi.Server
             RegisterAction<SpawnData.ActionWoodenPrisonData>("wooden-prison", ActionWoodenPrison);
             RegisterAction<SpawnData.ActionStonePrisonData>("stone-prison", ActionStonePrison);
             RegisterAction<SpawnData.ActionGoldenRainData>("golden-rain", ActionGoldenRain);
+            RegisterAction<SpawnData.ActionStarterKitData>("starter-kit", ActionStarterKit);
         }
 
         protected override async Task<object> Action(SpawnData.ActionMainData data)
@@ -83,6 +85,97 @@ namespace ValheimStreamerApi.Server
                 {
                     action = "golden-rain",
                     data = new {}
+                }
+            ).Task;
+            return JsonParser.Parse<SpawnData.RpcResponseData>(zData);
+        }
+
+        private async Task<object> ActionStarterKit(SpawnData.ActionStarterKitData data)
+        {
+            string playerName = data.playerName;
+            
+            var targetPeer = RpcManager.FindPlayerByName(playerName);
+            if (targetPeer == null) return new { error = "no player peer" };
+
+            string chest;
+            List<SpawnData.ChestItemData> items = new List<SpawnData.ChestItemData>();
+
+            if (!ZoneSystem.instance.GetGlobalKey("defeated_eikthyr"))
+            {
+                chest = "piece_chest_wood";
+                items = new List<SpawnData.ChestItemData>
+                {
+                    new SpawnData.ChestItemData{ name = "Wood",           amount = 100 },
+                    new SpawnData.ChestItemData{ name = "Stone",          amount = 50  },
+                    new SpawnData.ChestItemData{ name = "Flint",          amount = 25  },
+                    new SpawnData.ChestItemData{ name = "LeatherScraps",  amount = 20  },
+                    new SpawnData.ChestItemData{ name = "Feathers",       amount = 15  },
+                    new SpawnData.ChestItemData{ name = "Mushroom",       amount = 10  },
+                    new SpawnData.ChestItemData{ name = "Raspberry",      amount = 20  },
+                    new SpawnData.ChestItemData{ name = "Blueberries",    amount = 20  },
+                };
+            }
+            else if (!ZoneSystem.instance.GetGlobalKey("defeated_gdking"))
+            {
+                chest = "piece_chest_wood";
+                items = new List<SpawnData.ChestItemData>
+                {
+                    new SpawnData.ChestItemData{ name = "RoundLog",       amount = 40  },
+                    new SpawnData.ChestItemData{ name = "Resin",          amount = 30  },
+                    new SpawnData.ChestItemData{ name = "Coal",           amount = 20  },
+                    new SpawnData.ChestItemData{ name = "CopperOre",      amount = 40  },
+                    new SpawnData.ChestItemData{ name = "TinOre",         amount = 20  },
+                    new SpawnData.ChestItemData{ name = "Honey",          amount = 10  },
+                    new SpawnData.ChestItemData{ name = "Carrot",         amount = 15  },
+                    new SpawnData.ChestItemData{ name = "CookedMeat",     amount = 10  },
+                };
+            }
+            else if (!ZoneSystem.instance.GetGlobalKey("defeated_bonemass"))
+            {
+                chest = "piece_chest";
+                items = new List<SpawnData.ChestItemData>
+                {
+                    new SpawnData.ChestItemData{ name = "ElderBark",      amount = 30  },
+                    new SpawnData.ChestItemData{ name = "IronScrap",      amount = 40  },
+                    new SpawnData.ChestItemData{ name = "WitheredBone",   amount = 5   },
+                    new SpawnData.ChestItemData{ name = "Guck",           amount = 10  },
+                    new SpawnData.ChestItemData{ name = "Turnip",         amount = 15  },
+                    new SpawnData.ChestItemData{ name = "CookedDeerMeat", amount = 10  },
+                };
+            }
+            else if (!ZoneSystem.instance.GetGlobalKey("defeated_dragon"))
+            {
+                chest = "piece_chest";
+                items = new List<SpawnData.ChestItemData>
+                {
+                    new SpawnData.ChestItemData{ name = "Obsidian",       amount = 30  },
+                    new SpawnData.ChestItemData{ name = "SilverOre",      amount = 40  },
+                    new SpawnData.ChestItemData{ name = "WolfPelt",       amount = 15  },
+                    new SpawnData.ChestItemData{ name = "WolfFang",       amount = 10  },
+                    new SpawnData.ChestItemData{ name = "Onion",          amount = 20  },
+                    new SpawnData.ChestItemData{ name = "FreezeGland",    amount = 5   },
+                };
+            }
+            else
+            {
+                chest = "piece_chest_blackmetal";
+                items = new List<SpawnData.ChestItemData>
+                {
+                    new SpawnData.ChestItemData{ name = "BlackMetalScrap", amount = 40 },
+                    new SpawnData.ChestItemData{ name = "LinenThread",     amount = 20 },
+                    new SpawnData.ChestItemData{ name = "Tar",             amount = 15 },
+                    new SpawnData.ChestItemData{ name = "Resin",           amount = 20 },
+                    new SpawnData.ChestItemData{ name = "Flax",            amount = 30 },
+                    new SpawnData.ChestItemData{ name = "Barley",          amount = 30 },
+                    new SpawnData.ChestItemData{ name = "CloudBerry",      amount = 20 },
+                };
+            }
+
+            var zData = await RpcManager.SendMessageAsync(SpawnData.rpc, targetPeer.m_uid,
+                new RpcRequestData<SpawnData.RpcActionChestData>
+                {
+                    action = "chest",
+                    data = new SpawnData.RpcActionChestData{ chest = chest, items = items }
                 }
             ).Task;
             return JsonParser.Parse<SpawnData.RpcResponseData>(zData);

@@ -15,6 +15,7 @@ namespace ValheimStreamerApi.Client
             RegisterAction<object>("wooden-prison", WoodenPrison);
             RegisterAction<object>("stone-prison", StonePrison);
             RegisterAction<object>("golden-rain", GoldenRain);
+            RegisterAction<SpawnData.RpcActionChestData>("chest", Chest);
         }
 
         private object Spawn(SpawnData.RpcRequestData data)
@@ -104,6 +105,29 @@ namespace ValheimStreamerApi.Client
         private object GoldenRain(object _data)
         {
             Player.m_localPlayer.StartCoroutine(CoinRainRoutine());
+
+            return new { status = "ok" };
+        }
+
+        private object Chest(SpawnData.RpcActionChestData data)
+        {
+            Player player = Player.m_localPlayer;
+
+            GameObject prefab = ZNetScene.instance.GetPrefab(data.chest);
+            if (!prefab) return new { status = $"Prefab not found: {data.chest}" };
+
+            Vector3 position = player.transform.position + player.transform.forward * 2f;
+            GameObject go = GameObject.Instantiate(prefab, position, Quaternion.identity);
+
+            go.GetComponent<Piece>()?.SetCreator(player.GetPlayerID());
+
+            Container container = go.GetComponent<Container>();
+            if (container != null)
+            {
+                Inventory inventory = container.GetInventory();
+                foreach (var item in data.items)
+                    inventory.AddItem(item.name, item.amount, 1, 0, 0L, "");
+            }
 
             return new { status = "ok" };
         }
