@@ -61,6 +61,18 @@ namespace Shared.Models
             [JsonProperty("items")]
             public List<ChestItemData> items { get; set; }
         }
+
+        public class ActionInvisibleEnemyData
+        {
+            [JsonProperty("playerName")]
+            public string playerName { get; set; }
+        }
+
+        public class RpcActionInvisibleEnemyData
+        {
+            [JsonProperty("name")]
+            public string name { get; set; }
+        }
         
         public class RpcRequestData
         {

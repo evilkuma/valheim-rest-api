@@ -16,6 +16,7 @@ namespace ValheimStreamerApi.Client
             RegisterAction<object>("stone-prison", StonePrison);
             RegisterAction<object>("golden-rain", GoldenRain);
             RegisterAction<SpawnData.RpcActionChestData>("chest", Chest);
+            RegisterAction<SpawnData.RpcActionInvisibleEnemyData>("invisible-enemy", InvisibleEnemy);
         }
 
         private object Spawn(SpawnData.RpcRequestData data)
@@ -128,6 +129,24 @@ namespace ValheimStreamerApi.Client
                 foreach (var item in data.items)
                     inventory.AddItem(item.name, item.amount, 1, 0, 0L, "");
             }
+
+            return new { status = "ok" };
+        }
+
+        private object InvisibleEnemy(SpawnData.RpcActionInvisibleEnemyData data)
+        {
+            string prefabName = data.name;
+
+            GameObject prefab = ZNetScene.instance.GetPrefab(prefabName);
+            if (!prefab) return new { status = $"Prefab not found: {prefabName}" };
+
+            Player player = Player.m_localPlayer;
+            Vector3 position = player.transform.position + player.transform.forward * 5f;
+
+            GameObject go = GameObject.Instantiate(prefab, position, Quaternion.identity);
+
+            go.GetComponent<Character>()?.SetLevel(2);
+            go.AddComponent<InvisibleEnemyBehaviour>();
 
             return new { status = "ok" };
         }
